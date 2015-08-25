@@ -5,3 +5,4 @@ target/
 build.xml
 local.properties
 proguard-*.txt
+.ensime_cache

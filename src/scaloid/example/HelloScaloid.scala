@@ -2,26 +2,31 @@ package scaloid.example
 
 import org.scaloid.common._
 import android.graphics.Color
+import scroll.internal.Compartment
+import android.util.Log
 
 class HelloScaloid extends SActivity {
-  lazy val meToo = new STextView("Me too")
+
+  class BaseGreeter() {
+    def getGreeting(): String = "Hello World!"
+  }
+
+  class GreetingRole() {
+    def getGreeting(): String = "THIS IS A ROLE!!!!!"
+  }
+
+
+  val TAG = "HelloScaloid"
 
   onCreate {
-    contentView = new SVerticalLayout {
-      style {
-        case b: SButton => b.textColor(Color.RED).onClick(meToo.text = "PRESSED")
-        case t: STextView => t textSize 10.dip
-        case e: SEditText => e.backgroundColor(Color.YELLOW).textColor(Color.BLACK)
-      }
-      STextView("I am 10 dip tall")
-      meToo.here
-      STextView("I am 15 dip tall") textSize 15.dip // overriding
-      new SLinearLayout {
-        STextView("Button: ")
-        SButton(R.string.red)
-      }.wrap.here
-      SEditText("Yellow input field fills the space").fill
-    } padding 20.dip
+    new Compartment {
+      Log.e("MainActivity", "Init play")
+      val greeter = new BaseGreeter() play new GreetingRole()
+      Log.e("MainActivity", "Init greeting")
+      val greeting: String = (+greeter).getGreeting()
+      Log.i(TAG, greeting)
+      toast(greeting)
+    }
   }
 
 }
